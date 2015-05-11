@@ -47,13 +47,13 @@ module Mailboxer
 
         #Sends a messages, starting a new conversation, with the messageable
         #as originator
-        def send_message(recipients, msg_body, subject, sanitize_text=true, attachment=nil)
+        def send_message(recipients, msg_body, subject, sanitize_text=true, send_email=true, attachment=nil)
           convo = Conversation.new({:subject => subject})
           message = messages.new({:body => msg_body, :subject => subject, :attachment => attachment})
           message.conversation = convo
           message.recipients = recipients.is_a?(Array) ? recipients : [recipients]
           message.recipients = message.recipients.uniq
-          return message.deliver false,sanitize_text
+          return message.deliver(false, sanitize_text, send_email)
         end
 
         #Basic reply method. USE NOT RECOMENDED.
